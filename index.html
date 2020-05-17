@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            .invisible-image {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="splash" width="80" height="80" style="display: none;"></canvas>
+
+        <canvas id="water" width="866" height="500" style="border: 1px solid black;"></canvas>
+        <img src="c1h.png" id="c1h" class="invisible-image"></img>
+        <img src="c1v.png" id="c1v" class="invisible-image"></img>
+        <img src="c2h.png" id="c2h" class="invisible-image"></img>
+        <img src="c2v.png" id="c2v" class="invisible-image"></img>
+        <img src="c3h.png" id="c3h" class="invisible-image"></img>
+        <img src="c3v.png" id="c3v" class="invisible-image"></img>
+        <img src="c4h.png" id="c4h" class="invisible-image"></img>
+        <img src="c4v.png" id="c4v" class="invisible-image"></img>
+
+        <img src="splash/frame_00_delay-0.2s.png"  id="splash00" class="invisible-image"></img>
+        <img src="splash/frame_01_delay-0.04s.png" id="splash01" class="invisible-image"></img>
+        <img src="splash/frame_02_delay-0.04s.png" id="splash02" class="invisible-image"></img>
+        <img src="splash/frame_03_delay-0.04s.png" id="splash03" class="invisible-image"></img>
+        <img src="splash/frame_04_delay-0.04s.png" id="splash04" class="invisible-image"></img>
+        <img src="splash/frame_05_delay-0.04s.png" id="splash05" class="invisible-image"></img>
+        <img src="splash/frame_06_delay-0.04s.png" id="splash06" class="invisible-image"></img>
+        <img src="splash/frame_07_delay-0.04s.png" id="splash07" class="invisible-image"></img>
+        <img src="splash/frame_08_delay-0.04s.png" id="splash08" class="invisible-image"></img>
+        <img src="splash/frame_09_delay-0.04s.png" id="splash09" class="invisible-image"></img>
+        <img src="splash/frame_10_delay-0.04s.png" id="splash10" class="invisible-image"></img>
+        <img src="splash/frame_11_delay-0.04s.png" id="splash11" class="invisible-image"></img>
+        <img src="splash/frame_12_delay-0.04s.png" id="splash12" class="invisible-image"></img>
+        <img src="splash/frame_13_delay-0.04s.png" id="splash13" class="invisible-image"></img>
+        <img src="splash/frame_14_delay-0.04s.png" id="splash14" class="invisible-image"></img>
+        <img src="splash/frame_15_delay-0.04s.png" id="splash15" class="invisible-image"></img>
+        <img src="splash/frame_16_delay-0.04s.png" id="splash16" class="invisible-image"></img>
+        <img src="splash/frame_17_delay-0.04s.png" id="splash17" class="invisible-image"></img>
+        <img src="splash/frame_18_delay-0.04s.png" id="splash18" class="invisible-image"></img>
+        <img src="splash/frame_19_delay-0.04s.png" id="splash19" class="invisible-image"></img>
+        <img src="splash/frame_20_delay-0.04s.png" id="splash20" class="invisible-image"></img>
+        <img src="splash/frame_21_delay-0.04s.png" id="splash21" class="invisible-image"></img>
+        <img src="splash/frame_22_delay-0.04s.png" id="splash22" class="invisible-image"></img>
+        <img src="splash/frame_23_delay-0.04s.png" id="splash23" class="invisible-image"></img>
+        <img src="splash/frame_24_delay-0.04s.png" id="splash24" class="invisible-image"></img>
+        <img src="splash/frame_25_delay-0.04s.png" id="splash25" class="invisible-image"></img>
+        <img src="splash/frame_26_delay-0.04s.png" id="splash26" class="invisible-image"></img>
+        <img src="splash/frame_27_delay-0.04s.png" id="splash27" class="invisible-image"></img>
+        
+        <img src="explosion/frame_00_delay-0.06s.gif" id="explosion00" class="invisible-image"></img>
+        <img src="explosion/frame_01_delay-0.06s.gif" id="explosion01" class="invisible-image"></img>
+        <img src="explosion/frame_02_delay-0.06s.gif" id="explosion02" class="invisible-image"></img>
+        <img src="explosion/frame_03_delay-0.06s.gif" id="explosion03" class="invisible-image"></img>
+        <img src="explosion/frame_04_delay-0.06s.gif" id="explosion04" class="invisible-image"></img>
+        <img src="explosion/frame_05_delay-0.06s.gif" id="explosion05" class="invisible-image"></img>
+        <img src="explosion/frame_06_delay-0.06s.gif" id="explosion06" class="invisible-image"></img>
+        <img src="explosion/frame_07_delay-0.06s.gif" id="explosion07" class="invisible-image"></img>
+        <img src="explosion/frame_08_delay-0.06s.gif" id="explosion08" class="invisible-image"></img>
+        <img src="explosion/frame_09_delay-0.06s.gif" id="explosion09" class="invisible-image"></img>
+        <img src="explosion/frame_10_delay-0.06s.gif" id="explosion10" class="invisible-image"></img>
+        <img src="explosion/frame_11_delay-0.06s.gif" id="explosion11" class="invisible-image"></img>
+        <img src="explosion/frame_12_delay-0.06s.gif" id="explosion12" class="invisible-image"></img>
+        <img src="explosion/frame_13_delay-0.06s.gif" id="explosion13" class="invisible-image"></img>
+        <img src="explosion/frame_14_delay-0.06s.gif" id="explosion14" class="invisible-image"></img>
+        <img src="explosion/frame_15_delay-0.06s.gif" id="explosion15" class="invisible-image"></img>
+        <img src="explosion/frame_16_delay-0.06s.gif" id="explosion16" class="invisible-image"></img>
+        <img src="explosion/frame_17_delay-0.06s.gif" id="explosion17" class="invisible-image"></img>
+        <img src="explosion/frame_18_delay-0.06s.gif" id="explosion18" class="invisible-image"></img>
+        <img src="explosion/frame_19_delay-0.06s.gif" id="explosion19" class="invisible-image"></img>
+        <img src="explosion/frame_20_delay-0.06s.gif" id="explosion20" class="invisible-image"></img>
+        <img src="explosion/frame_21_delay-0.06s.gif" id="explosion21" class="invisible-image"></img>
+        <img src="explosion/frame_22_delay-0.06s.gif" id="explosion22" class="invisible-image"></img>
+        <img src="explosion/frame_23_delay-0.06s.gif" id="explosion23" class="invisible-image"></img>
+
+        <script src="common.js" type="text/javascript"></script>
+        <script src="placeShips.js" type="text/javascript"></script>
+        <script src="scene.js" type="text/javascript"></script>
+        <script src="ship.js" type="text/javascript"></script>
+        <script src="splash.js" type="text/javascript"></script>
+        <script src="explosion.js" type="text/javascript"></script>
+        <script src="battleship.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            main();
+        </script>
+    </body>
+</html>
