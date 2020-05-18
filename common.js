@@ -55,5 +55,29 @@ function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
 
+class OneOffTransformation {
+
+    constructor(delay, scene) {
+        this.delay = delay;
+        this.scene = scene;
+        this.tick = 0;
+    }
+
+    doApply() { }
+
+    apply() { 
+        if (this.tick >= this.delay) {
+            this.doApply();
+        }
+        this.tick += 1;
+    }
+
+    next() {
+        if (this.tick >= this.delay) { 
+            this.scene.removeTransformation(this);
+        }
+    }
+}
+
 
 

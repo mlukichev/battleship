@@ -19,7 +19,7 @@ function draw(scene) {
     }
 
     //console.log(scene.transformations);
-    for(var transformation of scene.transformations) {
+    for(var transformation of scene.transformations.slice()) {
         transformation.apply();
     }
 
@@ -63,16 +63,10 @@ function main() {
     var canvas = document.getElementById("water");
     canvas.addEventListener("click", (ev) => {
         var s = new ScreenPoint(ev.clientX-canvas.offsetLeft, ev.clientY-canvas.offsetTop);
-        console.log(s.x, s.y);
         var p = s.toWorldPoint(screen.X0, screen.Y0, 0);
         var i = Math.floor(p.y/50);
         var j = Math.floor(p.x/50);
-        console.log(p.x, p.y, i, j);
-        var s1 = p.toScreenPoint(screen.X0, screen.Y0);
-        console.log(s1.x, s1.y);
-        var explosion = new Explosion(i,j);
-        scene.addObject(explosion);
-        scene.addTransformation(new ExplosionTransformation(explosion, scene));
+        scene.addTransformation(new StartExplosionTransformation(i, j, 0, scene));
     }, false);
 
 }

@@ -18,7 +18,7 @@ class ExplosionSprite {
     }
 
     zDistance(screen) {
-        var p1 = new WorldPoint(this.p0.x+25, this.p0.y+25); 
+        var p1 = new WorldPoint(this.p0.x+25, this.p0.y+25+75, 0); 
         return screen.Y0 + sin30 * (p1.x-p1.y);
     }    
 }
@@ -59,6 +59,21 @@ class ExplosionTransformation {
             this.scene.removeObject(this.explosion);
             this.scene.removeTransformation(this);
         } 
+    }
+}
+
+class StartExplosionTransformation extends OneOffTransformation {
+
+    constructor(i, j, delay, scene) {
+        super(delay, scene);
+        this.i = i;
+        this.j = j;
+    }
+
+    doApply() {
+        var explosion = new Explosion(this.i, this.j);
+        this.scene.addObject(explosion);
+        this.scene.addTransformation(new ExplosionTransformation(explosion, this.scene));
     }
 }
 

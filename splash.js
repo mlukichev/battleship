@@ -16,7 +16,7 @@ class SplashSprite {
     }
 
     zDistance(screen) {
-        var p1 = new WorldPoint(this.p0.x+25, this.p0.y+25); 
+        var p1 = new WorldPoint(this.p0.x+25, this.p0.y+25, 0); 
         return screen.Y0 + sin30 * (p1.x-p1.y);
     }    
 }
@@ -57,6 +57,21 @@ class SplashTransformation {
             this.scene.removeObject(this.splash);
             this.scene.removeTransformation(this);
         } 
+    }
+}
+
+class StartSplashTransformation extends OneOffTransformation {
+
+    constructor(i, j, delay, scene) {
+        super(delay, scene);
+        this.i = i;
+        this.j = j;
+    }
+
+    doApply() {
+        var splash = new Splash(this.i, this.j);
+        this.scene.addObject(splash);
+        this.scene.addTransformation(new SplashTransformation(splash, this.scene));
     }
 }
 
