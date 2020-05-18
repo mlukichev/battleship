@@ -43,8 +43,6 @@ function draw(scene) {
 }
 
 function main() {
-    prepareSplash();
-
     var scene = new Scene();
 
     var ships = placeShips();
@@ -52,9 +50,9 @@ function main() {
         scene.addObject(ship);
     }
 
-    // var splash = new Splash(2,2);
-    // scene.addObject(splash);
-    // scene.addTransformation(new SplashTransformation(splash, scene));
+    var splash = new Splash(2,2);
+    scene.addObject(splash);
+    scene.addTransformation(new SplashTransformation(splash, scene));
 
     // var explosion = new Explosion(9,9);
     // scene.addObject(explosion);
