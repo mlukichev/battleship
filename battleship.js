@@ -19,7 +19,7 @@ function draw(scene) {
     }
 
     //console.log(scene.transformations);
-    for(var transformation of scene.transformations.slice()) {
+    for(var transformation of scene.transformations) {
         transformation.apply();
     }
 
@@ -42,17 +42,28 @@ function draw(scene) {
     window.requestAnimationFrame(() => { draw(scene); });
 }
 
+var map;
+
 function main() {
     var scene = new Scene();
+
+    map = new Array(10);
+    for (var i=0; i<10; i++) {
+        map[i]= new Array(10);
+        for(var j=0; j<10; j++) {
+            map[i][j]=0;
+        }
+    }
 
     var ships = placeShips();
     for (var ship of ships) {
         scene.addObject(ship);
+        ship.markOnTheMap(map);
     }
 
-    var splash = new Splash(2,2);
-    scene.addObject(splash);
-    scene.addTransformation(new SplashTransformation(splash, scene));
+    // var splash = new Splash(2,2);
+    // scene.addObject(splash);
+    // scene.addTransformation(new SplashTransformation(splash, scene));
 
     // var explosion = new Explosion(9,9);
     // scene.addObject(explosion);
@@ -66,7 +77,16 @@ function main() {
         var p = s.toWorldPoint(screen.X0, screen.Y0, 0);
         var i = Math.floor(p.y/50);
         var j = Math.floor(p.x/50);
-        scene.addTransformation(new StartExplosionTransformation(i, j, 0, scene));
+
+        if(map[i][j] > 0){
+            var ship_index = map[i][j];
+            var ship = ships[ship_index-1];
+            ship.lives -= 1;
+            scene.addTransformation(new StartExplosionTransformation(i, j, 0, scene));
+        }else{
+            scene.addTransformation(new StartSplashTransformation(i, j, 0, scene));
+        }
+
     }, false);
 
 }
