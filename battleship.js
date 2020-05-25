@@ -18,7 +18,6 @@ function draw(scene) {
         }
     }
 
-    //console.log(scene.transformations);
     for(var transformation of scene.transformations) {
         transformation.apply();
     }
@@ -61,14 +60,6 @@ function main() {
         ship.markOnTheMap(map);
     }
 
-    // var splash = new Splash(2,2);
-    // scene.addObject(splash);
-    // scene.addTransformation(new SplashTransformation(splash, scene));
-
-    // var explosion = new Explosion(9,9);
-    // scene.addObject(explosion);
-    // scene.addTransformation(new ExplosionTransformation(explosion, scene));
- 
     draw(scene);
 
     var canvas = document.getElementById("water");
@@ -83,6 +74,9 @@ function main() {
             var ship = ships[ship_index-1];
             ship.lives -= 1;
             scene.addTransformation(new StartExplosionTransformation(i, j, 0, scene));
+            if (ship.lives == 0) {
+                scene.addTransformation(new SinkTransformation(ship, scene));
+            }
         }else{
             scene.addTransformation(new StartSplashTransformation(i, j, 0, scene));
         }

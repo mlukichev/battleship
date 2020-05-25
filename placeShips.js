@@ -35,7 +35,7 @@ function placeShip(sea, d, l, ships) {
         for (var j=0; j<10; j++) {
             if(sea[i][j] == 0){
                 if(cell == 0) {
-                    ships.push(new Ship(i, j, l, d, l, ships.length+1));
+                    ships.push(new Ship(i, j, l, d, l, ships.length+1, 0));
                     for(var k=0; k<l; k++){
                         if(d=="h"){
                             sea[i][j+k]=1;

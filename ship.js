@@ -1,16 +1,17 @@
 class Ship {
-    constructor (i, j, l, d, lives, ship_index) {
+    constructor (i, j, l, d, lives, ship_index, z) {
         this.i = i;
         this.j = j;
         this.l = l;
         this.d = d;
         this.lives = lives;
         this.ship_index = ship_index;
+        this.z = z;
     }
 
     getSprites() {
         return [new ShipSprite(new WorldPoint(
-            this.j*50, this.i*50, 0
+            this.j*50, this.i*50, this.z
         ), this.l*50, 50, this.d, this.lives <= 0, "c"+this.l+this.d)];
     }
 
@@ -53,7 +54,7 @@ class ShipSprite {
             x1 = this.p0.x + this.l; 
         }
         var y1 = this.p0.y;
-        var p1 = new WorldPoint(x1, y1, 0);
+        var p1 = new WorldPoint(x1, y1, this.p0.z);
 
         var id;
         if (this.dead) {
@@ -70,11 +71,34 @@ class ShipSprite {
     zDistance(screen) {
         var p1;
         if (this.d == "v") {
-            p1 = new WorldPoint(this.p0.x+this.w/2, this.p0.y+this.l/2, 0); 
+            p1 = new WorldPoint(this.p0.x+this.w/2, this.p0.y+this.l/2, this.p0.z); 
         } else {
-            p1 = new WorldPoint(this.p0.x+this.l/2, this.p0.y+this.w/2, 0); 
+            p1 = new WorldPoint(this.p0.x+this.l/2, this.p0.y+this.w/2, this.p0.z); 
         } 
-        return screen.Y0 + sin30 * (p1.x-p1.y);
+        return screen.Y0 + sin30 * (p1.x-p1.y) - p1.z;
     }
+}
+
+class SinkTransformation {
+
+    constructor(ship, scene) {
+        this.ship = ship;
+        this.scene = scene;
+        this.depth = 0;
+        this.index = 0;
+    }
+
+    apply() {
+        this.ship.z = this.depth;
+    }
+
+    next() {
+        this.index += 1;
+        this.depth = - this.index * 15. / 120.;
+        if (this.index == 120) {
+            this.scene.removeTransformation(this);
+        } 
+    }
+
 }
 
