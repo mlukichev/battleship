@@ -10,9 +10,19 @@ class Ship {
     }
 
     getSprites() {
-        return [new ShipSprite(new WorldPoint(
+        var sprites = [new ShipSprite(new WorldPoint(
             this.j*50, this.i*50, this.z
         ), this.l*50, 50, this.d, this.lives <= 0, "c"+this.l+this.d)];
+
+        var p1;
+        if (this.d == "h") {
+            p1 = new WorldPoint(this.j*50, this.i*50, 0);
+        } else {
+            p1 = new WorldPoint(this.j*50, (this.i + this.l)*50, 0);
+        }
+        sprites.push(new HitPointsSprite(this.lives, this.l, p1, this.d));
+
+        return sprites;
     }
 
     markOnTheMap(map) {
@@ -74,6 +84,44 @@ class ShipSprite {
             p1 = new WorldPoint(this.p0.x+this.w/2, this.p0.y+this.l/2, this.p0.z); 
         } else {
             p1 = new WorldPoint(this.p0.x+this.l/2, this.p0.y+this.w/2, this.p0.z); 
+        } 
+        return screen.Y0 + sin30 * (p1.x-p1.y) - p1.z;
+    }
+}
+
+class HitPointsSprite {
+
+    constructor(lives, maxLives, p0, d) {
+        this.lives = lives;
+        this.maxLives = maxLives;
+        this.p0 = p0;
+        this.d = d;
+    }
+
+    draw(ctx, screen) {
+        if (this.d == "h") {
+            for(var k=0; k<this.maxLives; k++){
+                screen.drawPolygon(ctx, [
+                    this.p0.add(2,12.5*k+2,0), this.p0.add(2, 12.5*(k+1)-2, 0), 
+                    this.p0.add(6, 12.5*(k+1)-2, 0), this.p0.add(6, 12.5*k+2, 0)
+                ], "blue", k<this.lives?"white":"blue");    
+            }
+        } else {
+            for(var k=0; k<this.maxLives; k++){
+                screen.drawPolygon(ctx, [
+                    this.p0.add(12.5*k+2, -2, 0), this.p0.add(12.5*(k+1)-2, -2, 0), 
+                    this.p0.add(12.5*(k+1)-2, -6, 0), this.p0.add(12.5*k+2, -6, 0)
+                ], "blue", k<this.lives?"white":"blue");
+            }
+        }
+    }
+
+    zDistance(screen) {
+        var p1;
+        if (this.d == "h") {
+            p1 = this.p0.add(2.5, 25, 0); 
+        } else {
+            p1 = this.p0.add(25, -2.5, 0); 
         } 
         return screen.Y0 + sin30 * (p1.x-p1.y) - p1.z;
     }

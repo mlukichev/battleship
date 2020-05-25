@@ -27,6 +27,10 @@ class WorldPoint {
         var yp = Y0 + this.y*sin30 - this.x*sin30 - this.z;
         return new ScreenPoint(xp, yp);
     }
+
+    add(x, y, z) {
+        return new WorldPoint(this.x+x, this.y+y, this.z+z);
+    }
 }
 
 class Screen {
