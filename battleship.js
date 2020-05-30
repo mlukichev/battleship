@@ -45,6 +45,7 @@ var map;
 
 function main() {
     var scene = new Scene();
+    var otherPlayer = new Player();
 
     map = new Array(10);
     for (var i=0; i<10; i++) {
@@ -61,6 +62,25 @@ function main() {
     }
 
     draw(scene);
+
+    setInterval(() => {
+        otherPlayer.nextShot((i, j) => {
+            if(map[i][j] > 0){
+                var ship_index = map[i][j];
+                var ship = ships[ship_index-1];
+                ship.lives -= 1;
+                scene.addTransformation(new StartExplosionTransformation(i, j, 0, scene));
+                if (ship.lives == 0) {
+                    scene.addTransformation(new SinkTransformation(ship, scene));
+                    return 2;
+                }
+                return 1;
+            }else{
+                scene.addTransformation(new StartSplashTransformation(i, j, 0, scene));
+                return 0;
+            } 
+        })
+    }, 1000);
 
     var canvas = document.getElementById("water");
     canvas.addEventListener("click", (ev) => {

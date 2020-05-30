@@ -98,20 +98,30 @@ class HitPointsSprite {
         this.d = d;
     }
 
+    colorLivesAmount() {
+        if (this.lives == this.maxLives) {
+            return "white";
+        } else if (this.lives == 1) {
+            return "red";
+        } else {
+            return "yellow";
+        }
+    } 
+
     draw(ctx, screen) {
         if (this.d == "h") {
             for(var k=0; k<this.maxLives; k++){
                 screen.drawPolygon(ctx, [
                     this.p0.add(2,12.5*k+2,0), this.p0.add(2, 12.5*(k+1)-2, 0), 
                     this.p0.add(6, 12.5*(k+1)-2, 0), this.p0.add(6, 12.5*k+2, 0)
-                ], "blue", k<this.lives?"white":"blue");    
+                ], "blue", k<this.lives?this.colorLivesAmount():"blue");    
             }
         } else {
             for(var k=0; k<this.maxLives; k++){
                 screen.drawPolygon(ctx, [
                     this.p0.add(12.5*k+2, -2, 0), this.p0.add(12.5*(k+1)-2, -2, 0), 
                     this.p0.add(12.5*(k+1)-2, -6, 0), this.p0.add(12.5*k+2, -6, 0)
-                ], "blue", k<this.lives?"white":"blue");
+                ], "blue", k<this.lives?this.colorLivesAmount():"blue");
             }
         }
     }
