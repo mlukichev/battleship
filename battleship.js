@@ -1,5 +1,5 @@
 
-var screen = new Screen(0, 250);
+var screen = new AxonometricScreen(0, 250);
 
 function draw(scene) {
     var canvas = document.getElementById("water");
@@ -9,7 +9,7 @@ function draw(scene) {
 
     for (var i=0; i<10; i++) {
         for (var j=0; j<10; j++) {
-            screen.drawPolygon(ctx, [
+            WorldPoint.drawPolygon(ctx, screen, [
                 new WorldPoint(j*50, i*50, 0),
                 new WorldPoint(j*50+50, i*50, 0),
                 new WorldPoint(j*50+50, i*50+50, 0),
@@ -85,7 +85,7 @@ function main() {
     var canvas = document.getElementById("water");
     canvas.addEventListener("click", (ev) => {
         var s = new ScreenPoint(ev.clientX-canvas.offsetLeft, ev.clientY-canvas.offsetTop);
-        var p = s.toWorldPoint(screen.X0, screen.Y0, 0);
+        var p = screen.toWorldPoint(s, 0);
         var i = Math.floor(p.y/50);
         var j = Math.floor(p.x/50);
 
@@ -103,4 +103,17 @@ function main() {
 
     }, false);
 
+}
+
+function waitForAllImagesToLoad(cb) {
+    var images = document.getElementsByTagName("img");
+    for (var i=0; i<images.length; i++) {
+        if (!images.item(i).complete) {
+            setTimeout(() => {
+                waitForAllImagesToLoad(cb);
+            }, 100);
+            return;
+        }
+    }
+    cb();
 }

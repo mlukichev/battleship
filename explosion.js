@@ -10,7 +10,7 @@ class ExplosionSprite {
         // p1 -- center of the cell
         var p1 = new WorldPoint(this.p0.x+25, this.p0.y+25, 0);
         // s1 -- screen coordinates of p1
-        var s1 = p1.toScreenPoint(screen.X0, screen.Y0);
+        var s1 = screen.toScreenPoint(p1);
 
         var explosionId = "explosion"+this.index.toString().padStart(2,"0");
         var image = document.getElementById(explosionId);

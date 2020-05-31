@@ -74,8 +74,8 @@ class ShipSprite {
         }
         var img = document.getElementById(id);
         ctx.drawImage(img, 
-            this.p0.toScreenPoint(screen.X0, screen.Y0).x, 
-            p1.toScreenPoint(screen.X0, screen.Y0).y)
+            screen.toScreenPoint(this.p0).x, 
+            screen.toScreenPoint(p1).y)
     }
 
     zDistance(screen) {
@@ -111,14 +111,14 @@ class HitPointsSprite {
     draw(ctx, screen) {
         if (this.d == "h") {
             for(var k=0; k<this.maxLives; k++){
-                screen.drawPolygon(ctx, [
+                WorldPoint.drawPolygon(ctx, screen, [
                     this.p0.add(2,12.5*k+2,0), this.p0.add(2, 12.5*(k+1)-2, 0), 
                     this.p0.add(6, 12.5*(k+1)-2, 0), this.p0.add(6, 12.5*k+2, 0)
                 ], "blue", k<this.lives?this.colorLivesAmount():"blue");    
             }
         } else {
             for(var k=0; k<this.maxLives; k++){
-                screen.drawPolygon(ctx, [
+                WorldPoint.drawPolygon(ctx, screen, [
                     this.p0.add(12.5*k+2, -2, 0), this.p0.add(12.5*(k+1)-2, -2, 0), 
                     this.p0.add(12.5*(k+1)-2, -6, 0), this.p0.add(12.5*k+2, -6, 0)
                 ], "blue", k<this.lives?this.colorLivesAmount():"blue");
