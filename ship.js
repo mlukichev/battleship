@@ -7,12 +7,13 @@ class Ship {
         this.lives = lives;
         this.ship_index = ship_index;
         this.z = z;
+        this.isDead = false;
     }
 
     getSprites() {
         var sprites = [new ShipSprite(new WorldPoint(
             this.j*50, this.i*50, this.z
-        ), this.l*50, 50, this.d, this.lives <= 0, "c"+this.l+this.d)];
+        ), this.l*50, 50, this.d, this.isDead, "c"+this.l+this.d)];
 
         var p1;
         if (this.d == "h") {
@@ -147,6 +148,7 @@ class SinkTransformation {
     }
 
     apply() {
+        this.ship.isDead = true;
         this.ship.z = this.depth;
     }
 
@@ -156,6 +158,19 @@ class SinkTransformation {
         if (this.index == 120) {
             this.scene.removeTransformation(this);
         } 
+    }
+
+}
+
+class StartSinkTransformation extends OneOffTransformation {
+
+    constructor(ship, delay, scene) {
+        super(delay, scene);
+        this.ship = ship;
+    }
+
+    doApply() {
+        this.scene.addTransformation(new SinkTransformation(this.ship, this.scene));
     }
 
 }

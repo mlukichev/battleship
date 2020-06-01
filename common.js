@@ -84,27 +84,33 @@ function getRandomInt(max) {
 
 class OneOffTransformation {
 
-    constructor(delay, scene) {
+    constructor(delay, scene, cb = null) {
         this.delay = delay;
         this.scene = scene;
         this.tick = 0;
+        this.cb = cb;
     }
 
-    doApply() { }
+    doApply() {
+        if (this.cb) {
+            this.cb();
+        }
+    }
 
     apply() { 
-        if (this.tick >= this.delay) {
+        if (this.tick == this.delay) {
             this.doApply();
         }
-        this.tick += 1;
     }
 
     next() {
-        if (this.tick >= this.delay) { 
+        this.tick += 1;
+        if (this.tick > this.delay) { 
             this.scene.removeTransformation(this);
         }
     }
 }
+
 
 
 

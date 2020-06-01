@@ -65,18 +65,22 @@ function main() {
 
     setInterval(() => {
         otherPlayer.nextShot((i, j) => {
+            var shellSteps = 30;
+            scene.addTransformation(new FireShellTransformation(i, j, shellSteps, 0, scene));
             if(map[i][j] > 0){
                 var ship_index = map[i][j];
                 var ship = ships[ship_index-1];
-                ship.lives -= 1;
-                scene.addTransformation(new StartExplosionTransformation(i, j, 0, scene));
-                if (ship.lives == 0) {
-                    scene.addTransformation(new SinkTransformation(ship, scene));
+                scene.addTransformation(new OneOffTransformation(shellSteps, scene, () => {
+                    ship.lives -= 1;
+                }))
+                scene.addTransformation(new StartExplosionTransformation(i, j, shellSteps, scene));
+                if (ship.lives - 1 == 0) {
+                    scene.addTransformation(new StartSinkTransformation(ship, shellSteps, scene));
                     return 2;
                 }
                 return 1;
             }else{
-                scene.addTransformation(new StartSplashTransformation(i, j, 0, scene));
+                scene.addTransformation(new StartSplashTransformation(i, j, shellSteps, scene));
                 return 0;
             } 
         })
