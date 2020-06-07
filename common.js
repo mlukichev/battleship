@@ -36,6 +36,18 @@ class WorldPoint {
         ctx.stroke();
     }
 
+    static drawPolyline(ctx, screen, vertices, strokeColor) {
+        ctx.beginPath();
+        var p0 = screen.toScreenPoint(vertices[0]);
+        ctx.moveTo(p0.x, p0.y);
+        for (var i=1; i<vertices.length; i++) {
+            var p = screen.toScreenPoint(vertices[i]);
+            ctx.lineTo(p.x, p.y);
+        }
+        ctx.strokeStyle = strokeColor;
+        ctx.stroke();
+    }
+
 }
 
 class AxonometricScreen {
