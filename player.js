@@ -1,13 +1,13 @@
 class Player {
     constructor() {
-        this.otherSea = new Array(10);
-        for(var i=0; i<10; i++){
-            this.otherSea[i] = new Array(10);
-            for(var j=0; j<10; j++) {
-                this.otherSea[i][j] = 0;
-            }
-        }
+        this.otherSea = createEmptyMap();
         this.freeCells = 100;
+
+        this.ourSea = createEmptyMap();
+        this.ships = placeShips();
+        for (var ship of this.ships) {
+            ship.markOnTheMap(this.ourSea);
+        }    
     }
 
     nextShot(ask){

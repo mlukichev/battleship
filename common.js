@@ -123,6 +123,13 @@ class OneOffTransformation {
     }
 }
 
-
-
-
+function createEmptyMap() {
+    var sea = new Array(10);
+    for(var i=0; i<10; i++){
+        sea[i] = new Array(10);
+        for(var j=0; j<10; j++) {
+            sea[i][j] = 0;
+        }
+    }
+    return sea;
+}

@@ -138,9 +138,15 @@ function main() {
         // }else{
         //     scene.addTransformation(new StartSplashTransformation(i, j, 0, scene));
         // }
-
-        radarScene.addObject(new Hit(i,j, 0));
-
+        if (i<10 && j<10 && i>-1 && j>-1) {
+            var hitOrMiss;
+            if (otherPlayer.ourSea[i][j] != 0){
+                hitOrMiss=1;
+            }else{
+                hitOrMiss=0;
+            }
+            radarScene.addObject(new Hit(i,j, hitOrMiss));
+        }
     }, false);
 
 }
