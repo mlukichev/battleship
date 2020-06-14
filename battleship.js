@@ -73,25 +73,15 @@ function draw(scene, radarScene) {
     window.requestAnimationFrame(() => { draw(scene, radarScene); });
 }
 
-var map;
-
 function main() {
     var scene = new Scene();
     var radarScene = new Scene();
+
+    var ourPlayer = new Player();
     var otherPlayer = new Player();
 
-    map = new Array(10);
-    for (var i=0; i<10; i++) {
-        map[i]= new Array(10);
-        for(var j=0; j<10; j++) {
-            map[i][j]=0;
-        }
-    }
-
-    var ships = placeShips();
-    for (var ship of ships) {
+    for (var ship of ourPlayer.ships) {
         scene.addObject(ship);
-        ship.markOnTheMap(map);
     }
 
     draw(scene, radarScene);
@@ -100,9 +90,9 @@ function main() {
         otherPlayer.nextShot((i, j) => {
             var shellSteps = 30;
             scene.addTransformation(new FireShellTransformation(i, j, shellSteps, 0, scene));
-            if(map[i][j] > 0){
-                var ship_index = map[i][j];
-                var ship = ships[ship_index-1];
+            if(ourPlayer.ourSea[i][j] > 0){
+                var ship_index = ourPlayer.ourSea[i][j];
+                var ship = ourPlayer.ships[ship_index-1];
                 scene.addTransformation(new OneOffTransformation(shellSteps, scene, () => {
                     ship.lives -= 1;
                 }))
@@ -123,21 +113,9 @@ function main() {
     canvas2.addEventListener("click", (ev) => {
         var s = new ScreenPoint(ev.clientX-canvas2.offsetLeft, ev.clientY-canvas2.offsetTop);
         var p = screen2.toWorldPoint(s, 0);
-        console.log("hit:", s, p);
         var i = Math.floor((p.y-50)/40);
         var j = Math.floor((p.x-50)/40);
 
-        // if(map[i][j] > 0){
-        //     var ship_index = map[i][j];
-        //     var ship = ships[ship_index-1];
-        //     ship.lives -= 1;
-        //     scene.addTransformation(new StartExplosionTransformation(i, j, 0, scene));
-        //     if (ship.lives == 0) {
-        //         scene.addTransformation(new SinkTransformation(ship, scene));
-        //     }
-        // }else{
-        //     scene.addTransformation(new StartSplashTransformation(i, j, 0, scene));
-        // }
         if (i<10 && j<10 && i>-1 && j>-1) {
             var hitOrMiss;
             if (otherPlayer.ourSea[i][j] != 0){
