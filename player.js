@@ -17,8 +17,11 @@ class Player {
                 if (this.otherSea[i][j]!=0) {
                     continue;
                 }
-                if (shot==0){
-                    var result = ask(i, j); // 0 - miss, 1 - hit, 2 - kill
+                if (shot == 0){
+                    var { result, ship } = ask(i, j); // 0 - miss, 1 - hit, 2 - kill (also returns ship)
+                    if (result == -1) {
+                        throw new Error("Impossible situation -- hitting the same cell more than once");
+                    }
                     this.otherSea[i][j] = result+1;
                     this.freeCells--;
                     return;
@@ -27,5 +30,14 @@ class Player {
                 }
             }
         } 
+    }
+
+    takeHit(i, j) {
+        // TODO Check where the shell hit and return:
+        //   { -1, null } if cell has been hit before -- redo 
+        //   { 0, null } if miss
+        //   { 1, null } if hit, but not killed yet
+        //   { 2, ship } if killed
+        return { result: 0, ship: null }; 
     }
 }

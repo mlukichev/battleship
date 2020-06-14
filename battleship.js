@@ -73,50 +73,70 @@ function draw(scene, radarScene) {
     window.requestAnimationFrame(() => { draw(scene, radarScene); });
 }
 
+var ourPlayer = new Player();
+var otherPlayer = new Player();
+
+var scene = new Scene();
+var radarScene = new Scene();
+
+var ourPlayerCanHit = true;
+
+function otherPlayerHits() {
+    otherPlayer.nextShot((i, j) => {
+        var { result, ship } = ourPlayer.takeHit(i, j);
+        // TODO use below values returned from takeHit
+        var shellSteps = 30;
+        scene.addTransformation(new FireShellTransformation(i, j, shellSteps, 0, scene));
+        if(ourPlayer.ourSea[i][j] > 0){
+            var ship_index = ourPlayer.ourSea[i][j];
+            var ship = ourPlayer.ships[ship_index-1];
+            scene.addTransformation(new OneOffTransformation(shellSteps, scene, () => {
+                ship.lives -= 1;
+                otherPlayerHits();
+            }));
+            scene.addTransformation(new StartExplosionTransformation(i, j, shellSteps, scene));
+            if (ship.lives - 1 == 0) {
+                scene.addTransformation(new StartSinkTransformation(ship, shellSteps, scene));
+                // TODO check here if ourPlayer lost
+                return 2;
+            }
+            return 1;
+        }else{
+            scene.addTransformation(new StartSplashTransformation(i, j, shellSteps, scene));
+            scene.addTransformation(new OneOffTransformation(shellSteps, scene, () => {
+                ourPlayerCanHit = true;
+            }));
+            return 0;
+        } 
+    });
+}
+
 function main() {
-    var scene = new Scene();
-    var radarScene = new Scene();
-
-    var ourPlayer = new Player();
-    var otherPlayer = new Player();
-
     for (var ship of ourPlayer.ships) {
         scene.addObject(ship);
     }
 
     draw(scene, radarScene);
 
-    setInterval(() => {
-        otherPlayer.nextShot((i, j) => {
-            var shellSteps = 30;
-            scene.addTransformation(new FireShellTransformation(i, j, shellSteps, 0, scene));
-            if(ourPlayer.ourSea[i][j] > 0){
-                var ship_index = ourPlayer.ourSea[i][j];
-                var ship = ourPlayer.ships[ship_index-1];
-                scene.addTransformation(new OneOffTransformation(shellSteps, scene, () => {
-                    ship.lives -= 1;
-                }))
-                scene.addTransformation(new StartExplosionTransformation(i, j, shellSteps, scene));
-                if (ship.lives - 1 == 0) {
-                    scene.addTransformation(new StartSinkTransformation(ship, shellSteps, scene));
-                    return 2;
-                }
-                return 1;
-            }else{
-                scene.addTransformation(new StartSplashTransformation(i, j, shellSteps, scene));
-                return 0;
-            } 
-        })
-    }, 1000);
-
     var canvas2 = document.getElementById("radar");
     canvas2.addEventListener("click", (ev) => {
+        if (!ourPlayerCanHit) {
+            return;
+        }
+
         var s = new ScreenPoint(ev.clientX-canvas2.offsetLeft, ev.clientY-canvas2.offsetTop);
         var p = screen2.toWorldPoint(s, 0);
         var i = Math.floor((p.y-50)/40);
         var j = Math.floor((p.x-50)/40);
 
         if (i<10 && j<10 && i>-1 && j>-1) {
+            var { result, ship } = otherPlayer.takeHit(i, j);
+            if (result == -1) {
+                // hit the same cell more than once -- redo
+                return;
+            }
+            ourPlayerCanHit = false;
+            // TODO use below values returned from takeHit
             var hitOrMiss;
             if (otherPlayer.ourSea[i][j] != 0){
                 hitOrMiss=1;
@@ -124,6 +144,11 @@ function main() {
                 hitOrMiss=0;
             }
             radarScene.addObject(new Hit(i,j, hitOrMiss));
+
+            // TODO check here if we won
+
+            // TODO Other player should make next move -- but only if we missed!
+            otherPlayerHits();
         }
     }, false);
 
