@@ -33,11 +33,22 @@ class Player {
     }
 
     takeHit(i, j) {
-        // TODO Check where the shell hit and return:
-        //   { -1, null } if cell has been hit before -- redo 
-        //   { 0, null } if miss
-        //   { 1, null } if hit, but not killed yet
-        //   { 2, ship } if killed
-        return { result: 0, ship: null }; 
+        // Check where the shell hit and return:
+        //   { result: 0, ship: null } if miss
+        //   { result: 1, ship } if hit, but not killed yet
+        //   { result: 2, ship } if killed
+        if (this.ourSea[i][j] == 0){
+            return { result: 0, ship: null };
+        } else {
+            var shipIndex = this.ourSea[i][j];
+            var ship = this.ships[shipIndex-1];
+            if (ship.lives == 1){
+                return { result: 2, ship };
+            }else{
+                return{ result: 1, ship }; 
+            }
+        }
+        
+         
     }
 }

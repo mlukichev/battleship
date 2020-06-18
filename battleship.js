@@ -84,18 +84,15 @@ var ourPlayerCanHit = true;
 function otherPlayerHits() {
     otherPlayer.nextShot((i, j) => {
         var { result, ship } = ourPlayer.takeHit(i, j);
-        // TODO use below values returned from takeHit
         var shellSteps = 30;
         scene.addTransformation(new FireShellTransformation(i, j, shellSteps, 0, scene));
-        if(ourPlayer.ourSea[i][j] > 0){
-            var ship_index = ourPlayer.ourSea[i][j];
-            var ship = ourPlayer.ships[ship_index-1];
+        if(result > 0){
             scene.addTransformation(new OneOffTransformation(shellSteps, scene, () => {
                 ship.lives -= 1;
                 otherPlayerHits();
             }));
             scene.addTransformation(new StartExplosionTransformation(i, j, shellSteps, scene));
-            if (ship.lives - 1 == 0) {
+            if (result == 2) {
                 scene.addTransformation(new StartSinkTransformation(ship, shellSteps, scene));
                 // TODO check here if ourPlayer lost
                 return 2;
@@ -130,15 +127,15 @@ function main() {
         var j = Math.floor((p.x-50)/40);
 
         if (i<10 && j<10 && i>-1 && j>-1) {
-            var { result, ship } = otherPlayer.takeHit(i, j);
-            if (result == -1) {
+            if (ourPlayer.otherSea[i][j] > 0 ) {
                 // hit the same cell more than once -- redo
                 return;
             }
+            var { result, ship } = otherPlayer.takeHit(i, j);
             ourPlayerCanHit = false;
             // TODO use below values returned from takeHit
             var hitOrMiss;
-            if (otherPlayer.ourSea[i][j] != 0){
+            if (result != 0){
                 hitOrMiss=1;
             }else{
                 hitOrMiss=0;
@@ -147,8 +144,11 @@ function main() {
 
             // TODO check here if we won
 
-            // TODO Other player should make next move -- but only if we missed!
-            otherPlayerHits();
+            if(result==0){
+                otherPlayerHits();
+            }else{
+                ourPlayerCanHit=true;
+            }
         }
     }, false);
 
