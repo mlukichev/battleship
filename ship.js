@@ -38,6 +38,33 @@ class Ship {
         }
     }
     
+    getNeighborCells() {
+        var result = [];
+        if(this.d=="h"){
+            result.push({ i: this.i-1, j: this.j-1 });
+            result.push({ i: this.i+1, j: this.j-1 });
+            result.push({ i: this.i-1, j: this.j+this.l });
+            result.push({ i: this.i+1, j: this.j+this.l });
+            result.push({ i: this.i, j: this.j-1 });
+            result.push({ i: this.i, j: this.j+this.l });
+            for(var k=0; k<this.l; k++){
+                result.push({ i: this.i-1, j: this.j+k });
+                result.push({ i: this.i+1, j: this.j+k }); 
+            }
+        }else{
+            result.push({ i: this.i-1, j: this.j-1 });
+            result.push({ i: this.i+this.l, j: this.j-1 });
+            result.push({ i: this.i-1, j: this.j+1 });
+            result.push({ i: this.i+this.l, j: this.j+1 });
+            result.push({ i: this.i-1, j: this.j });
+            result.push({ i: this.i+this.l, j: this.j });
+            for(var k=0; k<this.l; k++){
+                result.push({ i: this.i+k, j: this.j-1 });
+                result.push({ i: this.i+k, j: this.j+1 }); 
+            } 
+        }
+        return result;
+    }
 }
 
 

@@ -100,9 +100,9 @@ function otherPlayerHits() {
             scene.addTransformation(new OneOffTransformation(shellSteps, scene, () => {
                 ship.lives -= 1;
                 if (result == 2) {
-                    showMessage("Our battleship has been sunk!");
+                    showMessage("Our warship has been sunk!");
                 } else {
-                    showMessage("Our battleship has been hit!");
+                    showMessage("Our warship has been hit!");
                 }
                 otherPlayerHits();
             }));
@@ -152,16 +152,31 @@ function main() {
             var hitOrMiss;
             if (result != 0){
                 hitOrMiss=1;
+                ship.lives-=1;
             }else{
                 hitOrMiss=0;
             }
             radarScene.addObject(new Hit(i,j, hitOrMiss));
+            ourPlayer.otherSea[i][j]=result+1;
+            if(result==2){
+                ship.getNeighborCells().forEach(({i, j}) => {
+                    if(i>=0 && i<10 && j>=0 && j<10 && ourPlayer.otherSea[i][j]==0) {
+                        radarScene.addObject(new Hit(i,j, 0));
+                        ourPlayer.otherSea[i][j]=1;
+                    }
+                });
+            }
 
             // TODO check here if we won
 
             if(result==0){
                 otherPlayerHits();
-            }else{
+            } else {
+                if (result==1){
+                    showMessage("Enemy warship damaged");
+                }else{
+                    showMessage("Enemy warship destroyed");
+                }
                 ourPlayerCanHit=true;
             }
         }
