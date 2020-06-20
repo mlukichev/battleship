@@ -96,8 +96,54 @@
             }
 
             #radar {
+                position: absolute;
+                left: 875px;
                 background: rgb(31, 21, 21);
                 border: 1px solid black;
+            }
+
+            #water-layer {
+                position: absolute;
+                display: inline;
+            }
+
+            #message-layer {
+                position: absolute;
+                left: 50%;
+                right: 50%;
+                top: 100%;
+            }
+
+            #message {
+                width: 766px;
+                height: 90px;
+                background: rgb(208, 223, 240);
+                box-shadow: 10px 10px 10px gray;
+                border: 0;  
+                border-radius: 15px;
+                transform: translate(-50%);    
+                padding: 40px;
+            }
+
+            #text {
+                font-size: 32pt;
+                font-family: sans-serif;
+                color: #005995;
+            }
+
+            .hidden-by-default {
+                visibility: hidden;
+            }
+
+            .fadeId {
+                visibility: visible;
+                opacity: 1;
+            }
+
+            .fadeOut {
+                visibility: hidden;
+                opacity: 0;
+                transition: visibility 0s 0.5s, opacity 0.5s linear;
             }
         </style>
     </head>
@@ -106,8 +152,20 @@
             <div id="spinner">
                 <div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
             </div>
-            <div id="main-window" style="display: none">
-                <canvas id="water" width="866" height="500"></canvas>
+            <div id="main-window" style="display: none;">
+                <div id="water-layer">
+                    <canvas id="water" width="866" height="500"></canvas>
+                    <div id="message-layer" class="hidden-by-default">
+                        <div id="message">
+                            <table>
+                                <tr>
+                                    <td><img id="sailor" src="sailor.svg" width="75" height="75"></img></td>
+                                    <td id="text">Our battleship has been sunk!</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
                 <canvas id="radar" width="500" height="500"></canvas>
             </div>
         </div>

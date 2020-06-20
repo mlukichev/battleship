@@ -81,6 +81,16 @@ var radarScene = new Scene();
 
 var ourPlayerCanHit = true;
 
+function showMessage(msg) {
+    var message = document.getElementById("message-layer");
+    var text = document.getElementById("text");
+    text.innerText = msg;
+    message.setAttribute("class", "fadeIn");
+    setTimeout(() => {
+        message.setAttribute("class", "fadeOut");
+    }, 1500);
+}
+
 function otherPlayerHits() {
     otherPlayer.nextShot((i, j) => {
         var { result, ship } = ourPlayer.takeHit(i, j);
@@ -89,6 +99,11 @@ function otherPlayerHits() {
         if(result > 0){
             scene.addTransformation(new OneOffTransformation(shellSteps, scene, () => {
                 ship.lives -= 1;
+                if (result == 2) {
+                    showMessage("Our battleship has been sunk!");
+                } else {
+                    showMessage("Our battleship has been hit!");
+                }
                 otherPlayerHits();
             }));
             scene.addTransformation(new StartExplosionTransformation(i, j, shellSteps, scene));
