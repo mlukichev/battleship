@@ -110,15 +110,15 @@ function otherPlayerHits() {
             if (result == 2) {
                 scene.addTransformation(new StartSinkTransformation(ship, shellSteps, scene));
                 // TODO check here if ourPlayer lost
-                return 2;
+                return { result, ship };
             }
-            return 1;
+            return { result, ship };
         }else{
             scene.addTransformation(new StartSplashTransformation(i, j, shellSteps, scene));
             scene.addTransformation(new OneOffTransformation(shellSteps, scene, () => {
                 ourPlayerCanHit = true;
             }));
-            return 0;
+            return { result, ship };
         } 
     });
 }

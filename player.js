@@ -1,7 +1,7 @@
 class Player {
     constructor() {
         this.otherSea = createEmptyMap();
-        this.freeCells = 100;
+        this.algorithm = new SmartyPantsAlgorithm(this);
 
         this.ourSea = createEmptyMap();
         this.ships = placeShips();
@@ -11,25 +11,22 @@ class Player {
     }
 
     nextShot(ask){
-        var shot = getRandomInt(this.freeCells);
-        for(var i=0; i<10; i++){
-            for(var j=0; j<10; j++){
-                if (this.otherSea[i][j]!=0) {
-                    continue;
+        var { i, j } = this.algorithm.chooseCell();
+
+        var { result, ship } = ask(i, j); // 0 - miss, 1 - hit, 2 - kill (also returns ship)
+        if (result == -1) {
+            throw new Error("Impossible situation -- hitting the same cell more than once");
+        }
+        this.otherSea[i][j] = result+1;
+        if(result == 2){
+            ship.getNeighborCells().forEach(({i, j}) => {
+                if(i>=0 && i<10 && j>=0 && j<10 && this.otherSea[i][j]==0) {
+                    this.otherSea[i][j]=1;
                 }
-                if (shot == 0){
-                    var { result, ship } = ask(i, j); // 0 - miss, 1 - hit, 2 - kill (also returns ship)
-                    if (result == -1) {
-                        throw new Error("Impossible situation -- hitting the same cell more than once");
-                    }
-                    this.otherSea[i][j] = result+1;
-                    this.freeCells--;
-                    return;
-                } else {
-                    shot --;
-                }
-            }
-        } 
+            });
+        }
+
+        this.algorithm.tellResult(i, j, result);
     }
 
     takeHit(i, j) {
