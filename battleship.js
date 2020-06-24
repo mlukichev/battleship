@@ -98,9 +98,18 @@ function otherPlayerHits() {
         scene.addTransformation(new FireShellTransformation(i, j, shellSteps, 0, scene));
         if(result > 0){
             scene.addTransformation(new OneOffTransformation(shellSteps, scene, () => {
+                document.getElementById("explosion-sound").play();
                 ship.lives -= 1;
                 if (result == 2) {
                     showMessage("Our warship has been sunk!");
+                    ourPlayer.shipCount -= 1;
+                    if(ourPlayer.shipCount==0){
+                        var resultDiv = document.getElementById("result");
+                        resultDiv.setAttribute("class", "result-message fadeInSlow");
+                        var resultMessage = document.getElementById("result-message");
+                        resultMessage.innerText = "You lost!";
+                        return;
+                    }
                 } else {
                     showMessage("Our warship has been hit!");
                 }
@@ -116,6 +125,7 @@ function otherPlayerHits() {
         }else{
             scene.addTransformation(new StartSplashTransformation(i, j, shellSteps, scene));
             scene.addTransformation(new OneOffTransformation(shellSteps, scene, () => {
+                document.getElementById("splash-sound").play();
                 ourPlayerCanHit = true;
             }));
             return { result, ship };
@@ -165,17 +175,27 @@ function main() {
                         ourPlayer.otherSea[i][j]=1;
                     }
                 });
-            }
+            } 
 
             // TODO check here if we won
-
+            //document.getElementById("radar-sound").play();
             if(result==0){
                 otherPlayerHits();
             } else {
                 if (result==1){
                     showMessage("Enemy warship damaged");
+                    //document.getElementById("radar-sound").play();
                 }else{
                     showMessage("Enemy warship destroyed");
+                    //document.getElementById("radar-sound").play();
+                    otherPlayer.shipCount -= 1;
+                    if(otherPlayer.shipCount==0){
+                        var resultDiv = document.getElementById("result");
+                        resultDiv.setAttribute("class", "result-message fadeInSlow");
+                        var resultMessage = document.getElementById("result-message");
+                        resultMessage.innerText = "We Won!";
+                        return;
+                    }
                 }
                 ourPlayerCanHit=true;
             }

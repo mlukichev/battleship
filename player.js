@@ -7,7 +7,9 @@ class Player {
         this.ships = placeShips();
         for (var ship of this.ships) {
             ship.markOnTheMap(this.ourSea);
-        }    
+        }
+        
+        this.shipCount=10;
     }
 
     nextShot(ask){
