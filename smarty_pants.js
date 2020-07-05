@@ -38,23 +38,25 @@ class SmartyPantsAlgorithm {
                     if (j+1 < 10 && this.player.otherSea[i][j+1] == 0) {
                         return { i, j: j+1 };
                     } else {
-                        if (j-1 >= 0 && this.player.otherSea[i][j-1] > 0) {
+                        if (j == 9 || this.player.otherSea[i][j+1] == 1) {
                             j --;
                             while (j >= 0 && this.player.otherSea[i][j] > 0) {
                                 j --;
                             }
                             if (j < 0) {
+                                console.log("Incorrect position: ", this.context, this.player.otherSea[i]);
                                 this.context = null;
                                 return this.chooseCell();
                             }
                             return { i, j };
                         } else
-                        if (j+1 < 10 && this.player.otherSea[i][j+1] > 0) {
+                        if (j == 0 || this.player.otherSea[i][j-1] == 1) {
                             j ++;
                             while (j < 10 && this.player.otherSea[i][j] > 0) {
                                 j ++;
                             }
                             if (j >= 10) {
+                                console.log("Incorrect position: ", this.context, this.player.otherSea[i]);
                                 this.context = null;
                                 return this.chooseCell();
                             }
@@ -71,23 +73,25 @@ class SmartyPantsAlgorithm {
                     if (i+1 < 10 && this.player.otherSea[i+1][j] == 0) {
                         return { i: i+1, j };
                     } else {
-                        if (i-1 >= 0 && this.player.otherSea[i-1][j] > 0) {
+                        if (i == 9 || this.player.otherSea[i+1][j] == 1) {
                             i --;
                             while (i >= 0 && this.player.otherSea[i][j] > 0) {
                                 i --;
                             }
                             if (i < 0) {
+                                console.log("Incorrect position: ", this.context, this.player.otherSea.map(v => v[j]));
                                 this.context = null;
                                 return this.chooseCell();
                             }
                             return { i, j };
                         } else
-                        if (i+1 < 10 && this.player.otherSea[i+1][j] > 0) {
+                        if (i == 0 || this.player.otherSea[i-1][j] == 1) {
                             i ++;
                             while (i < 10 && this.player.otherSea[i][j] > 0) {
                                 i ++;
                             }
                             if (i >= 10) {
+                                console.log("Incorrect position: ", this.context, this.player.otherSea.map(v => v[j]));
                                 this.context = null;
                                 return this.chooseCell();
                             }
